@@ -33,11 +33,45 @@ dsh-behavior-guard: 任务清单里还有 3 条没完成，已经 15 次工具�
 
 ## 安装
 
+**这个包没有发布到 npm，只从 GitHub 分发。** 下面两种方式挑一种。
+
+### A. 用 CLI 从 GitHub 装
+
 ```bash
-dsh plugin add dsh-behavior-guard
+dsh plugin add github:StarflowDream/dsh-behavior-guard --profile <profile>
 ```
 
-装完在 profile 的 `cordis.patch.yml` 里加一条（插件自带的补丁里已是出厂样例）：
+CLI 认 `github:`、`git+`、`<url>.git`、`...#<ref>` 这几种写法；它内部走 `git clone`，所以机器要连得上 github.com。
+
+### B. 手工落位（clone 走不通时用这个）
+
+在仓库页点 `Code → Download ZIP` 解压，或 `git clone` 到临时目录，然后把整个目录放到：
+
+```
+<DSH_HOME>\profiles\<profile>\node_modules\dsh-behavior-guard\
+```
+
+再改 `profiles\<profile>\package.json` 两处：
+
+```jsonc
+{
+  "dependencies": {
+    "dsh-behavior-guard": "file:<你放源码的绝对路径>"   // 路径用正斜杠
+  },
+  "dsh": {
+    "profile": {
+      "bundles": [ "……", "dsh-behavior-guard" ]        // 追加到数组末尾
+    }
+  }
+}
+```
+
+想直接改源码调试，就把仓库 clone 到 `<DSH_HOME>\plugins-src\dsh-behavior-guard\`，`dependencies` 写
+`"file:<DSH_HOME>/plugins-src/dsh-behavior-guard"`。
+
+### 挂上钩子
+
+在 profile 的 `cordis.patch.yml` 里加一条（插件自带的 `cordis.patch.yml` 就是这段的出厂样例）：
 
 ```yaml
 - insert:
@@ -47,7 +81,13 @@ dsh plugin add dsh-behavior-guard
         enabled: true
 ```
 
-重启 DSH 后生效。想确认挂上了，随便 `edit` 一个本次会话没读过的文件——被拒就是挂上了。
+**完全退出并重启桌面端**（`dsh.profile.bundles` 只在启动时读一次）。
+
+想确认挂上了，随手 `edit` 一个本次会话没读过的文件——被拒就是挂上了。
+
+### 卸载
+
+删掉 `node_modules\dsh-behavior-guard\`，把 `package.json` 里那两处改回去（或从 `package.json.bak-*` 恢复），重启。
 
 ## 配置
 
