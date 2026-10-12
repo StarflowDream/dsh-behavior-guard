@@ -1,0 +1,52 @@
+{
+  "name": "dsh-behavior-guard",
+  "version": "0.1.0",
+  "description": "把行为层里最容易忘的三条变成硬拦截：改文件前必须在本次会话读过它、会丢工作的破坏性命令先拿可逆写法、任务清单别变成摆设。",
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "tool-guard",
+    "safety",
+    "behavior-layer"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "test",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "test": "node test/guard.test.mjs"
+  },
+  "license": "MIT",
+  "author": "StarflowDream",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StarflowDream/dsh-behavior-guard.git"
+  },
+  "homepage": "https://github.com/StarflowDream/dsh-behavior-guard#readme",
+  "bugs": {
+    "url": "https://github.com/StarflowDream/dsh-behavior-guard/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "*"
+  }
+}
